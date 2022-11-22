@@ -4,6 +4,7 @@ from conf_data import email, email_password
 
 def send_email(message):
     sender = email
+    sending_email = 'as7rum@gmail.com'
     password = email_password
 
     server = smtplib.SMTP('smtp.mail.ru', 587)
@@ -11,7 +12,7 @@ def send_email(message):
 
     try:
         server.login(sender, password)
-        server.sendmail(sender, sender, message)
+        server.sendmail(sender, sending_email, message)
 
         return 'The message was sent successfully!'
     except Exception as _ex:
