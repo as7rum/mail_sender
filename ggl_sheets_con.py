@@ -21,7 +21,7 @@ values = service.spreadsheets().values().get(
 ).execute()
 
 
-# pprint(values['values'][0][2].split(' ')[1])
+# pprint(type(values['values']))
 # pprint(values['values'].count())
 
 # values = service.spreadsheets().values().get()

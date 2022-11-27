@@ -2,6 +2,7 @@ import smtplib
 from conf_data import email, email_password, subject
 from email.mime.text import MIMEText
 from ggl_sheets_con import values
+from time import sleep
 
 
 def send_email(name, link, sending_email, status):
@@ -42,6 +43,8 @@ def send_email(name, link, sending_email, status):
     try:
         server.login(sender, password)
         msg = MIMEText(template, 'html')
+        msg['From'] = sender
+        msg['To'] = sending_email
         msg['Subject'] = subject
         server.sendmail(sender, sending_email, msg.as_string())
 
@@ -49,23 +52,18 @@ def send_email(name, link, sending_email, status):
     except Exception as _ex:
         return f'{_ex}\nCheck your login or password please'
 
-def get_number_of_elements(list):
-    count = 0
-    for element in list:
-        count += 1
-    return count
-
 def send_email_for_all():
     
-    rows_number = get_number_of_elements(values['values'])
-    
-    for row in range(rows_number):
-        status = values['values'][row][13]
+    delay = 60
+
+    for row in values['values']:
+        status = row[13]
         if status == 'Письмо':
-            name = values['values'][row][2].split(' ')[1]
-            link = values['values'][row][3]
-            sending_email = values['values'][row][8]
+            name = row[2].split(' ')[1]
+            link = row[3]
+            sending_email = row[8]
             send_email(name, link, sending_email, status)
+            sleep(delay)
             
 
 
